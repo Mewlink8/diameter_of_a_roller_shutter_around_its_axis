@@ -1,1 +1,16 @@
+# Calcul du diamètre d’un volet roulant autour de son axe lorsque le volet est ouvert
 
+
+mesure = int(input("Entrer le diametre de l'axe en mm: "))
+tours = int(input("Entrer nombre de tours n: "))
+print("Tour- Diametre [mm] - Longueur enrouléée [mm]" )
+print()
+print("Calcul de la longeure L par formule :")
+print("Longeur [mm] pour ",tours, "tours :", )
+for i in range (tours):
+    i=tm*s
+    cr=m-i
+    crd=s-cr
+    ir=i+ir
+    print("",j+1,"  - ",round(m,1),"     - ",round(i,1),"   - ",round(cr,1),"            - ",round(crd,1),"        - ",round(ir,2))
+    s=crd
