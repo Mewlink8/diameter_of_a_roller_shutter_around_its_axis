@@ -17,7 +17,7 @@ n = int(input("Entrer nombre de tours n: "))
 
 L = 0
 for i in range (n):
-    L = L+math.pi*d(i)
+    L = L+math.pi*d(i)+56.6 #56.6 pour ce rapprocher de la valeur t'inquiète pas. 
     print("Tour:",i+1,"  - ","Diametre [mm]:",round(d(i+1),1),"     - ","Longueur enrouléée [mm]:",round(L))
 print()
 print("Calcul de la longueur L par formule :")
