@@ -1,27 +1,65 @@
-# Calcul du diamètre d’un volet roulant autour de son axe lorsque le volet est ouvert
+'''
+1. Combien de lames « entières » sont nécessaires pour le tablier en position fermée ?
+    → (Longueur du tablier / largeur d'une lame) = (2.4 m / 0.036 m) ≈ 67 lames nécessaires
 
-#Question 1 : Combien de lames « entières » sont nécessaires pour le tablier en position fermée ? 2400/36=66.7 donc 67 lames.
-#Question 2 : En déduire la longueur à enrouler. 67*40 = 2680 mm.
-#Question 3 : Donner l’équation de la suite arithmétique du diamètre « dn » pour le tour « n ».
-#Question 4 : En déduire la circonférence parcourue « cn » pour le tour « n »
-#Question 5 :Calculer la longueur enroulée « Ln » au tour « n ». Les tours étant entiers, il sera nécessaire de faire une interpolation linéaire pour définir correctement le diamètre selon la longueur enroulée.  (d -186)/ (2680-2507) = (204 - 186) / (3091 - 2507)    d= 191
-#Question 6 :En réalité, afin que les attaches du tablier ne soient pas en extension ou tendues lorsqu’il est fermé, on considère que le tablier reste enroulé sur 2 tours. Pour faire simple, ces 2 tours tiennent compte de la distance entre l’axe et les glissières. Calculer la nouvelle longueur « Ln » à enrouler. Conclure.
+2. En déduire la longueur à enrouler.
+    → (Nombre de lames * Largeur d'une lame étirée) = (67 * 40 m) = Longueur à enrouler de 2680 mm
 
-import math
-l = 9
-def d(n):
-    return (d0+2*l*n)
+3. Donner l’équation de la suite arithmétique du diamètre « dn » pour le tour « n ».
+    → dn = Diamètre initial de l'axe + (2 * Épaisseur d'une lame * Nombre de tours)
+    (Donné comme résultat de la fonction calcul_diametre)
 
-d0 = int(input("Entrer le diametre de l'axe en mm: "))
-n = int(input("Entrer nombre de tours n: "))
+4. En déduire la circonférence parcourue « cn » pour le tour « n ».
+    → Pi * (Diamètre de l'axe au tour n - 1)
+    (Donné comme valeur de la variable circonference_parcourue)
 
-L = 0
-for i in range (n):
-    L = L+math.pi*d(i)+56.6 #56.6 pour ce rapprocher de la valeur t'inquiète pas. 
-    print("Tour:",i+1,"  - ","Diametre [mm]:",round(d(i+1),1),"     - ","Longueur enrouléée [mm]:",round(L))
+5. Calculer la longueur enroulée « Ln » au tour « n ».
+    → Pi * (Diamètre de l'axe au tour n)
+
+6. En réalité, afin que les attaches du tablier ne soient pas en extension ou tendues lorsqu’il est fermé, on considère que le tablier reste enroulé sur 2 tours.
+    → ???
+'''
+
+import math   # Pour utiliser Pi dans nos calculs
+
+epaisseur_lame = 9   # Épaisseur d'une lame, augmentée pour tenir compte de l'enroulement (7.5 mm + 1.5 mm)
+
+# Récupération des entrées de l'utilisateur
+diametre_axe_initial = int(input("Veuillez entrer le diamètre initial de l'axe en mm : "))
+nombre_tours = int(input("Veuillez entrer le nombre de tours à effectuer : "))
+
+longueur_enroulee = 0   # Initialisation du compteur de la longueur enroulée
+
+
+def calcul_diametre(nombre_tours):   # Fonction de calcul du diamètre de l'axe pour chaque tour
+
+    return diametre_axe_initial + (2 * epaisseur_lame * nombre_tours)
+
+
 print()
-print("Calcul de la longueur L par formule :")
-c0=math.pi*d(0)
-cn=math.pi*d(n-1)
-L=(c0+cn)*(n+0)/2
-print("Longeur [mm] pour ",n, "tours :",L )
+for tour in range(1, nombre_tours + 1):   # Calcul et affichage du diamètre et de la longueur enroulée pour chaque tour
+
+    longueur_enroulee += math.pi * calcul_diametre(tour)   # Calcul de la longueur enroulée à ce tour
+    print(f"Tour : {tour}  -  Diamètre [mm] : {calcul_diametre(tour)}  -  Longueur enroulée [mm] : {round(longueur_enroulee)}")
+
+
+circonference_initiale = math.pi * calcul_diametre(0)   # Circonférence de l'axe avant enroulement
+circonference_parcourue = math.pi * calcul_diametre(nombre_tours - 1)   # Circonférence de l'axe au tour n
+
+# Calcul de la longueur enroulée en utilisant la formule de la somme d'une progression arithmétique
+longueur_par_formule = (nombre_tours / 2) * (circonference_initiale + circonference_parcourue)
+
+'''
+Formule utilisée: somme d'une progression arithmétique
+
+S = (n/2) * (a1+an)
+
+Avec:
+
+n = nombre de termes dans la progression (ici le nombre de tours)
+a1 = premier terme de la progression (ici la circonférence initiale de l'axe, avant le début de l'enroulement)
+an = dernier terme de la progression (ici la circonférence finale de l'axe, une fois l'enroulement terminé)
+'''
+
+print("\nCalcul de la longueur L par formule :")
+print(f"→ Longueur [mm] pour {nombre_tours} tours : {longueur_par_formule}")
